@@ -6,7 +6,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
 ]
-TABLE_COLS = ['Имя', 'Телефон', 'Авто', 'Госномер', 'Услуга', 'Дата приема', 'Дата выдачи', 'Способ оплаты', 'Сумма']
+
 CREDENTIALS_FILE = "creds.json"  # Path to the Google credentials file
 # SPREADSHEET_ID = "ID of the Google spreadsheet"
 # TABLE_URL = "URL of the table"
