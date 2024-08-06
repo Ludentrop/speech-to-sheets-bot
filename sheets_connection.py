@@ -15,13 +15,15 @@ httpAuth = credentials.authorize(httplib2.Http())
 service = build("sheets", "v4", http=httpAuth)
 
 
-def insert_values(values: dict) -> int:
+def insert_values(data: list) -> int:
     """
     Inserts a row of data into the spreadsheet.
 
-    :param values: A dictionary of values to insert.
+    :param data: A list of values to insert.
     :return: Integer indicating the status of the insert operation.
     """
+    values = {"values": [data]}
+
     try:
         vals = (
             service.spreadsheets()
