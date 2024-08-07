@@ -78,9 +78,9 @@ async def start_insert(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите имя (голосовым сообщением)")
+        await message.reply("Введите имя")
     else:
-        await message.reply("Введите имя (текстовым сообщением)")
+        await message.reply("Введите имя")
 
 
 @dp.message_handler(commands=["insert"], state="*")
@@ -122,7 +122,7 @@ async def process_name(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте имя в виде голосового сообщения.")
     else:
-        await state.update_data(name=message.text)
+        await state.update_data(name=message.text.strip().title())
         await continue_to_phone(message, state)
 
 
@@ -131,9 +131,9 @@ async def continue_to_phone(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите телефон (голосовым сообщением)")
+        await message.reply("Введите телефон")
     else:
-        await message.reply("Введите телефон (текстовым сообщением)")
+        await message.reply("Введите телефон")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_phone)
@@ -153,7 +153,7 @@ async def process_phone(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте телефон в виде голосового сообщения.")
     else:
-        await state.update_data(phone=message.text)
+        await state.update_data(phone=message.text.replace(" ", ""))
         await continue_to_auto(message, state)
 
 
@@ -162,9 +162,9 @@ async def continue_to_auto(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите модель авто (голосовым сообщением)")
+        await message.reply("Введите модель авто")
     else:
-        await message.reply("Введите модель авто (текстовым сообщением)")
+        await message.reply("Введите модель авто")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_auto)
@@ -184,7 +184,7 @@ async def process_auto(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте модель авто в виде голосового сообщения.")
     else:
-        await state.update_data(auto=message.text)
+        await state.update_data(auto=message.text.strip().title())
         await continue_to_gov(message, state)
 
 
@@ -193,9 +193,9 @@ async def continue_to_gov(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите гос номер (голосовым сообщением)")
+        await message.reply("Введите гос номер")
     else:
-        await message.reply("Введите гос номер (текстовым сообщением)")
+        await message.reply("Введите гос номер")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_gov)
@@ -215,7 +215,7 @@ async def process_gov(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте гос номер в виде голосового сообщения.")
     else:
-        await state.update_data(gov=message.text)
+        await state.update_data(gov=gov_number_former(message.text))
         await continue_to_service(message, state)
 
 
@@ -224,9 +224,9 @@ async def continue_to_service(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите услугу (голосовым сообщением)")
+        await message.reply("Введите услугу")
     else:
-        await message.reply("Введите услугу (текстовым сообщением)")
+        await message.reply("Введите услугу")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_service)
@@ -246,7 +246,7 @@ async def process_service(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте услугу в виде голосового сообщения.")
     else:
-        await state.update_data(service=message.text)
+        await state.update_data(service=message.text.strip().capitalize())
         await continue_to_receive(message, state)
 
 
@@ -255,9 +255,9 @@ async def continue_to_receive(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите дату приёма (голосовым сообщением)")
+        await message.reply("Введите дату приёма")
     else:
-        await message.reply("Введите дату приёма (текстовым сообщением)")
+        await message.reply("Введите дату приёма")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_receive)
@@ -277,7 +277,7 @@ async def process_receive(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте дату приёма в виде голосового сообщения.")
     else:
-        await state.update_data(receive=message.text)
+        await state.update_data(receive=date_former(message.text))
         await continue_to_issue(message, state)
 
 
@@ -286,9 +286,9 @@ async def continue_to_issue(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите дату выдачи (голосовым сообщением)")
+        await message.reply("Введите дату выдачи")
     else:
-        await message.reply("Введите дату выдачи (текстовым сообщением)")
+        await message.reply("Введите дату выдачи")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_issue)
@@ -308,7 +308,7 @@ async def process_issue(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте дату выдачи в виде голосового сообщения.")
     else:
-        await state.update_data(issue=message.text)
+        await state.update_data(issue=date_former(message.text))
         await continue_to_payment(message, state)
 
 
@@ -317,9 +317,9 @@ async def continue_to_payment(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите способ оплаты (голосовым сообщением)")
+        await message.reply("Введите способ оплаты")
     else:
-        await message.reply("Введите способ оплаты (текстовым сообщением)")
+        await message.reply("Введите способ оплаты")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_payment)
@@ -339,7 +339,7 @@ async def process_payment(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте способ оплаты в виде голосового сообщения.")
     else:
-        await state.update_data(payment=message.text)
+        await state.update_data(payment=message.text.strip().capitalize())
         await continue_to_cost(message, state)
 
 
@@ -348,9 +348,9 @@ async def continue_to_cost(message: types.Message, state: FSMContext):
     format_type = await state.get_data("format_type")
     format_type = format_type.get("format_type", None)
     if format_type == "voice":
-        await message.reply("Введите стоимость услуг (голосовым сообщением)")
+        await message.reply("Введите стоимость услуг")
     else:
-        await message.reply("Введите стоимость услуг (текстовым сообщением)")
+        await message.reply("Введите стоимость услуг")
 
 
 @dp.message_handler(content_types=[types.ContentType.VOICE, types.ContentType.TEXT], state=Form.waiting_for_cost)
@@ -370,7 +370,7 @@ async def process_cost(message: types.Message, state: FSMContext):
         else:
             return await message.reply("Пожалуйста, отправьте стоимость услуг в виде голосового сообщения.")
     else:
-        await state.update_data(cost=message.text)
+        await state.update_data(cost=cost_former(message.text))
         await confirm_data(message, state)
 
 
@@ -393,7 +393,7 @@ async def confirm_data(message: types.Message, state: FSMContext):
 async def process_confirmation(message: types.Message, state: FSMContext):
     if message.text.lower() == "да":
         user_data = await state.get_data()
-        insert_values(list(user_data.values()))
+        insert_values(list(user_data.values())[1:])
         await message.reply("Данные сохранены!")
         await state.finish()
     else:

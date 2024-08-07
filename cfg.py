@@ -10,5 +10,3 @@ SCOPES = [
 CREDENTIALS_FILE = "creds.json"  # Path to the Google credentials file
 SPREADSHEET_ID = "ID of the Google spreadsheet"
 TABLE_URL = "URL of the table"
-
-
