@@ -3,10 +3,6 @@ This module is used to extract and format data from the input text.
 """
 import datetime as dt
 import subprocess
-import os
-
-from cfg import TABLE_COLS
-from google_speech import recognize_speech
 
 
 def gov_number_former(gov_number: str) -> str:
@@ -74,6 +70,10 @@ def cost_former(cost: str) -> str:
         cost = cost.replace(" ", "")
     if "." in cost:
         cost = cost.replace(".", "")
+    if "руб" in cost:
+        cost = cost.replace("руб", "")
+    if "рублей" in cost:
+        cost = cost.replace("рублей", "")
 
     return cost
 
@@ -91,51 +91,3 @@ def convert_and_save(file_name: str) -> str:
     )
 
     return file_name_wav
-
-
-# def extract_data(col: str, converter: callable, transcriber: callable, file_name: str) -> str:
-#     """
-#     The function extract data from the input text by keywords.
-#
-#     :param converter: The function to convert and save the input file.
-#     :param file_name: Input file name.
-#     :param transcriber: The function to transcribe the input file.
-#     :param col: The name of the column.
-#     :return data: List of extracted data.
-#     """
-#     file_name_wav = converter(file_name)
-#     text = transcriber(file_name_wav)
-#     match col:
-#         case "name":
-#             text = text.strip().title()
-#         case "phone":
-#             text = text.replace(" ", "")
-#         case "auto":
-#             text = text.strip().title()
-#         case "gov_number":
-#             text = gov_number_former(text)
-#         case "service":
-#             text = text.strip().capitalize()
-#         case "receive":
-#             text = date_former(text)
-#         case "issue":
-#             text = date_former(text)
-#         case "payment":
-#             text = text.strip().capitalize()
-#         case "cost":
-#             text = cost_former(text)
-#
-#     os.remove(file_name)
-#     os.remove(file_name+'.wav')
-#
-#     return text
-
-
-# def main(col: str, file_name: str) -> list:
-#     data = extract_data(
-#         col,
-#         convert_and_save,
-#         recognize_speech,
-#         file_name
-#     )
-#     return data
